@@ -1,0 +1,19 @@
+body#error {
+    background-image: url('http://retardzone.com/rz4/images/404.jpg');
+    background-size: 100%;
+    text-align: center;
+    text-size: 36px;
+}
+
+div#currency {
+
+}
+
+div#country {
+
+}
+
+iframe#frame {
+   width: 600px;
+   height: 600px;
+}
