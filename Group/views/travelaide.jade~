@@ -1,5 +1,4 @@
-doctype html
-
+doctype 5
 html
 head
 meta http-equiv="Content-Type" content="text/html" charset=UTF-8
@@ -12,12 +11,20 @@ head
 body
 
 div(id="currency")
-  p Convert From: 
-    select(id="currFrom")
-  p To:
-    select(id="currTo")
+  label Amount To Convert:
+  input(type="text", value pattern="^[0-9]{1,7}$", placeholder="Amount", id="amount")
+  &nbsp
+  label From:
+  select(id="currFrom")
+  &nbsp
+  label To:
+  select(id="currTo") 
+  &nbsp
+  label Result: 
+  span(id="convResult")
 
 div(id="country")
+  label View a Country
   select(id="c_list")
 
 div(id="frame")
