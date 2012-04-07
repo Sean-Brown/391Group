@@ -13,7 +13,18 @@ div#country {
 
 }
 
+span#convResult {
+    background-color: lightgray;
+}
+
 iframe#frame {
    width: 600px;
    height: 600px;
+   float: right;
+}
+
+iframe#cframe {
+    width: 600px;
+    height: 600px;
+    float: left;
 }

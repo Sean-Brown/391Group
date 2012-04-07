@@ -25,16 +25,8 @@ $(document).ready(function() {
 	var code = $("#c_list").val();
 	var link = '';
 	console.log(countries.Results);
-	for (var key in countries.Results) {
-	    console.log('key = '+key);
-	    for (var key2 in countries.Results[key]){
-		console.log('key2 = '+key2);
-		if (key2.value === code) {
-		    console.log("country found");
-		    link = key3;
-		    break;
-		}
-	    }
+	for (var i in countries.Results) {
+	    console.log('i = '+i);
 	}
 	$("#cframe").attr('src', link);
     });

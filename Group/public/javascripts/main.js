@@ -21,11 +21,25 @@ $(document).ready(function() {
     });
 
     $("#country").bind('change', function() {
-	console.log("country changed");
 	var code = $("#c_list").val();
+	if (code === '') {
+	    return;
+	}
 	var link = '';
-	console.log(countries.Results);
-	$("#cframe").attr('src', link);
+	var found = false;
+	for (var i in countries.Results) {
+	    if (found == true) {
+		break;
+	    }
+	    for (var j in countries.Results[i]) {
+		if (j === 'Name' && countries.Results[i][j] === code) {
+		    link = 'http://www.geognos.com/api/en/countries/info/'+i+'.html';
+		    $("#cframe").attr('src', link);
+		    found = true;
+		    break;
+		}
+	    }
+	}
     });
 });
 
@@ -35,6 +49,7 @@ function capitalise(string) {
 
 function parseXml(xml) {
     //find every tip and print it
+    $("#c_list").append("<option></option><br>"); // add a blank
     $(xml).find("List").each(function() {
 	    $(this).find("Entry").each( function() {
 		var c = capitalise($(this).find("Name").text().toLowerCase());
