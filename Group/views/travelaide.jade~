@@ -24,9 +24,9 @@ div(id="currency")
   span(id="convResult")
 
 div(id="country")
-  label View a Country
+  label View a Country 
   select(id="c_list")
+iframe(id="cframe", src="")
 
 div(id="frame")
 iframe(src="http://travel.state.gov/travel", id="frame")
-

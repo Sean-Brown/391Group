@@ -13,6 +13,14 @@ div#country {
 
 }
 
+span#geo:hover {
+    background-color: lightgreen;
+}
+
+span+span:hover {
+    background-color: lightblue;
+}
+
 span#convResult {
     background-color: lightgray;
 }
@@ -27,4 +35,8 @@ iframe#cframe {
     width: 300px;
     height: 600px;
     float: left;
+}
+
+select#c_list {
+    float: top left;
 }
