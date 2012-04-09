@@ -68,7 +68,30 @@ $(document).ready(function() {
 });
 
 function capitalise(string) {
-     return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+     var ret = string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    if(ret.match(/^Brunei.*$/)) {
+	ret = 'Brunei';
+    }
+    else if(ret.match(/^.*Bissau$/)) {
+        ret = 'Guinea-Bissau';
+    }
+    else if(ret.match(/^Heard.*$/)) {
+        ret = 'Heard Island and McDonald Islands';
+    }
+    else if(ret.match(/^Isle Of Man$/)) {
+        ret = 'Isle of Man';
+    }
+    else if(ret.match(/^Saint Helena.*$/)) {
+        ret = 'Saint Helena Ascension and Tristan da Cunha';
+    }
+    else if(ret.match(/And/i)) {
+	ret = ret.replace(/\sAnd\s/gi," and ");
+	return (ret.replace(/\sThe\s/gi," the "));
+    }
+    else if(ret.match(/^Timor.*$/)) {
+        ret = 'Timor-Leste';
+    }
+    return ret;
 }
 
 function parseXml(xml) {
@@ -77,7 +100,9 @@ function parseXml(xml) {
     $(xml).find("List").each(function() {
 	    $(this).find("Entry").each( function() {
 		var c = capitalise($(this).find("Name").text().toLowerCase());
-		$("#c_list").append("<option>"+c+"</option><br>");
+		if (c !== null) {
+		    $("#c_list").append("<option>"+c+"</option><br>");
+		}
 	    });
 	});
 }

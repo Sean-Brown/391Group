@@ -1,6 +1,8 @@
 var currencies = ["AED","AFN","ALL","AMD","ANG","AOA","ARS","AUD","AWG","AZN","BAM","BBD","BDT","BGN","BHD","BIF","BMD","BND","BOB","BRL","BSD","BTN","BWP","BYR","BZD","CAD","CDF","CHF","CLF","CLP","CNY","COP","CRC","CUP","CVE","CZK","DJF","DKK","DOP","DZD","EGP","ETB","EUR","FJD","FKP","GBP","GEL","GHS","GIP","GMD","GNF","GTQ","GYD","HKD","HNL","HRK","HTG","HUF","IDR","IEP","ILS","INR","IQD","IRR","ISK","JMD","JOD","JPY","KES","KGS","KHR","KMF","KPW","KRW","KWD","KZT","LAK","LBP","LKR","LRD","LSL","LTL","LVL","LYD","MAD","MDL","MGA","MKD","MMK","MNT","MOP","MRO","MUR","MVR","MWK","MXN","MYR","MZN","NAD","NGN","NIO","NOK","NPR","NZD","OMR","PAB","PEN","PGK","PHP","PKR","PLN","PYG","QAR","RON","RSD","RUB","RWF","SAR","SBD","SCR","SDG","SEK","SGD","SHP","SLL","SOS","SRD","STD","SVC","SYP","SZL","THB","TJS","TMT","TND","TOP","TRY","TTD","TWD","TZS","UAH","UGX","USD","UYU","UZS","VEF","VND","VUV","WST","XAF","XCD","XDR","XOF","XPF","YER","ZAR","ZMK","ZWL"]
 
-var countries = [];
+var countries = []; // The list of countries
+var geo = ''; // The last Geognos link
+var frame = 'gov'; // Tells what the current frame is for 'frame'
 
 $(document).ready(function() {
     listRates();
@@ -36,10 +38,31 @@ $(document).ready(function() {
 		    link = 'http://www.geognos.com/api/en/countries/info/'+i+'.html';
 		    $("#cframe").attr('src', link);
 		    $("iframe#frame").attr('src', 'http://www.geognos.com/geo/en/cc/'+i.toLowerCase()+'.html');
+		    geo = 'http://www.geognos.com/geo/en/cc/'+i.toLowerCase()+'.html';
+		    frame = 'geo';
 		    found = true;
 		    break;
 		}
 	    }
+	}
+    });
+
+    $("#geo").click(function(){
+	if (geo === '' || frame === 'geo') {
+	    return;
+	}
+	else {
+	    $("iframe#frame").attr('src', geo);
+	    frame = 'geo';
+	}
+    });
+    $("#gov").click(function(){
+	if (frame === 'gov') {
+	    return;
+	}
+	else {
+            $("iframe#frame").attr('src', 'http://travel.state.gov/travel');
+	    frame = 'gov';
 	}
     });
 });
