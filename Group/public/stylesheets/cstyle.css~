@@ -22,7 +22,7 @@ div#login {
     height: 515px;
     position: absolute;
     z-index: 99;
-    background: lightblue;
+    background: mediumturquoise;
     font-weight: bold;
 }
 
@@ -44,7 +44,21 @@ table#stats {
     float: left;
     color: red;
     border: 2px;
-    border-color: black;
+    border-color: white;
+    border-style: solid;
+    border-collapse: collapse;
+    font-size: 24px;
+    height: 600px;
+    overflow: scroll;
+    background-color: black;
+}
+
+table#top10 {
+    text-align: center;
+    color: lightskyblue;
+    background-color: black;
+    border: 2px;
+    border-color: white;
     border-style: solid;
     border-collapse: collapse;
     font-size: 24px;
@@ -52,27 +66,49 @@ table#stats {
     overflow: scroll;
 }
 
-table#top10 {
+tr,td {
     text-align: center;
-    color: red;
-    border: 2px;
-    border-color: black;
+    vertical-align: middle;
+    border: 1px;
+    border-color: white;
     border-style: solid;
-    border-collapse: collapse;
-    font-size: 24px;
-    height: 600px;
-    overflow: scroll;
+}
+
+th {
+    border: 1px;
+    border-color: white;
+    border-style: groove;
+    vertical-align: middle;
+    text-align: center;
+}
+
+th.theader {
+    border-bottom: 2px;
+    border-color: white;
+    border-style: solid;
+    color: white;
+}
+
+thead {
+    text-align:center;
+    vertical-align: middle;
+}
+
+span#result {
+    border: 1px;
+    border-color: black;
+    border-style: ridge;
 }
 
 span#geo:hover {
     background-color: lightgreen;
 }
 
-span+span:hover {
+span#gov:hover {
     background-color: lightblue;
 }
 
-span+span+span:hover {
+span#stats:hover {
     background-color: wheat;
 }
 
@@ -123,32 +159,4 @@ a#dest:hover {
     background-color: lightgoldenrodyellow;
     background-image: -moz-linear-gradient(green, red);
     text-decoration: none;    
-}
-
-tr,td {
-    text-align: center;
-    vertical-align: middle;
-    border: 1px;
-    border-color: black;
-    border-style: solid;
-}
-
-th {
-    border: 1px;
-    border-color: black;
-    border-style: groove;
-    vertical-align: middle;
-    text-align: center;
-}
-
-th.theader {
-    border-bottom: 2px;
-    border-color: black;
-    border-style: solid;
-    color: black;
-}
-
-thead {
-    text-align:center;
-    vertical-align: middle;
 }

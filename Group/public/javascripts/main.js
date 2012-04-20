@@ -151,7 +151,7 @@ $(document).ready(function() {
         else {
             $("iframe#geo_frame").hide();
             $("iframe#gov_frame").hide();
-	    $("table#top10").css("margin-left",$("table#stats").width());
+	    $("table#my_countries").css("margin-left",$("table#stats").width());
             $("div#stats").show();
 	    listMyCountries();
             frame = 'stats';
@@ -175,7 +175,7 @@ $(document).ready(function() {
     $(window).resize(function () {
 	$("iframe#gov_frame").css("width",$(window).width()-324);
 	$("iframe#geo_frame").css("width",$(window).width()-324);
-	$("table#top10").css("margin-left",$("table#stats").width());
+	$("table#my_countries").css("margin-left",$("table#stats").width());
     });
 
     // This is for password verification, so a new user knows when the first password does not
@@ -279,9 +279,9 @@ function listMyCountries() {
         url: "/my_countries",
     });
     req.done(function(data) {
-	$("table#top10 tr").remove(); 
-        $("table#top10 thead").append("<tr><th class=\"theader\">Your Countries</th></tr><tr><th>Country</th></tr>");
-        var table = $("table#top10 tbody:last"); 
+	$("table#my_countries tr").remove(); 
+        $("table#my_countries thead").append("<tr><th class=\"theader\">Your Countries</th></tr><tr><th>Country</th></tr>");
+        var table = $("table#my_countries tbody:last"); 
         for(var i = 0; i < data.length; i++) {
             table.after('<tr><td>'+data[i].destination+'</td>></tr>');
         }
