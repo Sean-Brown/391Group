@@ -101,12 +101,8 @@
       <Code>BT</Code>
    </Entry>
    <Entry>
-      <Name>BOLIVIA, PLURINATIONAL STATE OF</Name>
+      <Name>BOLIVIA</Name>
       <Code>BO</Code>
-   </Entry>
-   <Entry>
-      <Name>BONAIRE, SINT EUSTATIUS AND SABA</Name>
-      <Code>BQ</Code>
    </Entry>
    <Entry>
       <Name>BOSNIA AND HERZEGOVINA</Name>
@@ -185,10 +181,6 @@
       <Code>CX</Code>
    </Entry>
    <Entry>
-      <Name>COCOS (KEELING) ISLANDS</Name>
-      <Code>CC</Code>
-   </Entry>
-   <Entry>
       <Name>COLOMBIA</Name>
       <Code>CO</Code>
    </Entry>
@@ -215,10 +207,6 @@
    <Entry>
       <Name>CROATIA</Name>
       <Code>HR</Code>
-   </Entry>
-   <Entry>
-      <Name>CURAÇAO</Name>
-      <Code>CW</Code>
    </Entry>
    <Entry>
       <Name>CUBA</Name>
@@ -277,7 +265,7 @@
       <Code>ET</Code>
    </Entry>
    <Entry>
-      <Name>FALKLAND ISLANDS (MALVINAS)</Name>
+      <Name>FALKLAND ISLANDS</Name>
       <Code>FK</Code>
    </Entry>
    <Entry>
@@ -345,10 +333,6 @@
       <Code>GD</Code>
    </Entry>
    <Entry>
-      <Name>GUADELOUPE</Name>
-      <Code>GP</Code>
-   </Entry>
-   <Entry>
       <Name>GUAM</Name>
       <Code>GU</Code>
    </Entry>
@@ -381,7 +365,7 @@
       <Code>HM</Code>
    </Entry>
    <Entry>
-      <Name>HOLY SEE (VATICAN CITY STATE)</Name>
+      <Name>HOLY SEE</Name>
       <Code>VA</Code>
    </Entry>
    <Entry>
@@ -465,11 +449,11 @@
       <Code>KI</Code>
    </Entry>
    <Entry>
-      <Name>North KOREA</Name>
+      <Name>KOREA North</Name>
       <Code>KP</Code>
    </Entry>
    <Entry>
-      <Name>South KOREA</Name>
+      <Name>KOREA South</Name>
       <Code>KR</Code>
    </Entry>
    <Entry>
@@ -673,7 +657,7 @@
       <Code>PW</Code>
    </Entry>
    <Entry>
-      <Name>PALESTINIAN TERRITORY, OCCUPIED</Name>
+      <Name>PALESTINIAN TERRITORY</Name>
       <Code>PS</Code>
    </Entry>
    <Entry>
@@ -717,15 +701,11 @@
       <Code>QA</Code>
    </Entry>
    <Entry>
-      <Name>RÉUNION</Name>
-      <Code>RE</Code>
-   </Entry>
-   <Entry>
       <Name>ROMANIA</Name>
       <Code>RO</Code>
    </Entry>
    <Entry>
-      <Name>RUSSIAN FEDERATION</Name>
+      <Name>RUSSIA</Name>
       <Code>RU</Code>
    </Entry>
    <Entry>
@@ -733,11 +713,11 @@
       <Code>RW</Code>
    </Entry>
    <Entry>
-      <Name>SAINT BARTHÉLEMY</Name>
+      <Name>SAINT BARTHELEMY</Name>
       <Code>BL</Code>
    </Entry>
    <Entry>
-      <Name>SAINT HELENA, ASCENSION AND TRISTAN DA CUNHA</Name>
+      <Name>SAINT HELENA ASCENSION AND TRISTAN DA CUNHA</Name>
       <Code>SH</Code>
    </Entry>
    <Entry>
@@ -749,7 +729,7 @@
       <Code>LC</Code>
    </Entry>
    <Entry>
-      <Name>SAINT MARTIN (FRENCH PART)</Name>
+      <Name>SAINT MARTIN</Name>
       <Code>MF</Code>
    </Entry>
    <Entry>
@@ -797,10 +777,6 @@
       <Code>SG</Code>
    </Entry>
    <Entry>
-      <Name>SINT MAARTEN (DUTCH PART)</Name>
-      <Code>SX</Code>
-   </Entry>
-   <Entry>
       <Name>SLOVAKIA</Name>
       <Code>SK</Code>
    </Entry>
@@ -821,14 +797,6 @@
       <Code>ZA</Code>
    </Entry>
    <Entry>
-      <Name>SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS</Name>
-      <Code>GS</Code>
-   </Entry>
-   <Entry>
-      <Name>SOUTH SUDAN</Name>
-      <Code>SS</Code>
-   </Entry>
-   <Entry>
       <Name>SPAIN</Name>
       <Code>ES</Code>
    </Entry>
@@ -845,7 +813,7 @@
       <Code>SR</Code>
    </Entry>
    <Entry>
-      <Name>SVALBARD AND JAN MAYEN</Name>
+      <Name>SVALBARD</Name>
       <Code>SJ</Code>
    </Entry>
    <Entry>
@@ -957,7 +925,7 @@
       <Code>VE</Code>
    </Entry>
    <Entry>
-      <Name>VIET NAM</Name>
+      <Name>VIETNAM</Name>
       <Code>VN</Code>
    </Entry>
    <Entry>
@@ -965,7 +933,7 @@
       <Code>VG</Code>
    </Entry>
    <Entry>
-      <Name>VIRGIN ISLANDS, U.S.</Name>
+      <Name>VIRGIN ISLANDS</Name>
       <Code>VI</Code>
    </Entry>
    <Entry>

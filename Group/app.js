@@ -1,7 +1,6 @@
 /**
  * Module dependencies.
  */
-
 var express = require('express')
 , routes = require('./routes')
 , app = module.exports = express.createServer();
@@ -34,9 +33,12 @@ app.error(function(err, req, res, next){
 });
 
 // Routes
-
-app.get('/', routes.index);
 app.get('/ta', routes.ta);
+app.post('/ta', routes.lilo);
+app.post('/add', routes.add);
+app.get('/list', routes.list);
+app.get('/10', routes.top10);
+app.get('/count', routes.count);
 
 app.listen(5069);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

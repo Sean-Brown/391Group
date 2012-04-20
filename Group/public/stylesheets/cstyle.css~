@@ -5,6 +5,27 @@ body#error {
     text-size: 36px;
 }
 
+div#cover {
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    background: gray;
+    opacity: 0.8;
+}
+
+div#login {
+    left: 30%;
+    top: 0px;
+    width: 600px;
+    height: 515px;
+    position: absolute;
+    z-index: 99;
+    background: lightblue;
+    font-weight: bold;
+}
+
 div#currency {
 
 }
@@ -13,18 +34,112 @@ div#country {
 
 }
 
+div#stats {
+
+}
+
+table#stats {
+    text-align: center;
+    margin-left: 50%;
+    color: red;
+    border: 1px;
+    border-color: black;
+    border-style: solid;
+}
+
+span#geo:hover {
+    background-color: lightgreen;
+}
+
+span+span:hover {
+    background-color: lightblue;
+}
+
+span+span+span:hover {
+    background-color: wheat;
+}
+
 span#convResult {
     background-color: lightgray;
 }
 
-iframe#frame {
+iframe#gov_frame {
    width: 1000px;
    height: 600px;
    float: right;
+}
+
+iframe#geo_frame {
+    width: 1000px;
+    height: 600px;
+    float: right;
 }
 
 iframe#cframe {
     width: 300px;
     height: 600px;
     float: left;
+}
+
+select#c_list {
+    float: top left;
+}
+
+form {
+    text-align: center;
+}
+
+input#logout {
+    float: right;
+}
+
+a#dest {
+    border: 1px solid black;
+    padding: 0px 2px 0px 2px;
+    background-color: lightcoral;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+
+a#dest:hover {
+    background-color: lightgoldenrodyellow;
+    background-image: -moz-linear-gradient(green, red);
+    text-decoration: none;    
+}
+
+tr {
+    margin: 0px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+td {
+    margin: 0px;
+    text-align: center;
+    vertical-align: middle;
+    border-top: 1px;
+    border-bottom: 1px;
+    border-color: black;
+    border-style: solid;
+}
+
+th {
+    border: 1px;
+    border-color: black;
+    border-style: groove;
+    vertical-align: middle;
+    text-align: center;
+}
+
+th#theader {
+    border-bottom: 2px;
+    border-color: black;
+    border-style: solid;
+    color: black;
+}
+
+thead {
+    text-align:center;
+    vertical-align: middle;
 }
