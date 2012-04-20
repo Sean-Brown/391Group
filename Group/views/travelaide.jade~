@@ -27,7 +27,7 @@ div(id="cover")
      p
       input(type="submit", value="Login") 	       
    p(style="text-align: center") OR
-   form(id="create", method="post)
+   form(id="create", method="post")
     fieldset 
      legend Create New Account 
      p
@@ -36,7 +36,6 @@ div(id="cover")
      p
       label Password: 
       input(type="password", class="upass2", name="upass", required) 
-     p Requires 1 number, 1 capital letter, minimum 7 characters
      p
       label Re-type Password: 
       input(type="password", class="upass2", name="upass2", required)
@@ -79,8 +78,15 @@ div(id="stats")
   table(id="stats")
     thead 
      tr(colspan=2)
-      th(id='theader') Most Popular Countries
+      th(class='theader') Most Popular Countries
      tr
       th Country
       th Count
+    tbody
+  table(id="top10")
+    thead
+     tr(colspan=2)
+      th(class='theader') Your Countries
+     tr
+      th Country
     tbody

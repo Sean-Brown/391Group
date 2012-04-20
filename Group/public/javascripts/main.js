@@ -2,7 +2,7 @@ var currencies = ["AED","AFN","ALL","AMD","ANG","AOA","ARS","AUD","AWG","AZN","B
 
 var countries = []; // The list of countries
 var frame = 'gov'; // Tells what the current frame is for 'frame'
-var country_count = 0;
+var user = {};
 
 $(document).ready(function() {
     listRates();
@@ -22,6 +22,37 @@ $(document).ready(function() {
 	success: function(data) {
 	    countries = data;
 	}
+    });
+
+    // Check to see if there's a user logged in for this session
+    var logged_in = $.ajax({
+	type: "POST",
+	url: "/logged_in"
+    });
+    logged_in.done(function(data) {
+	if (data.user === '') {
+	    cover();
+	}
+	else {
+	    user.name = data.user;
+	    $.ajax({
+		type: "GET",
+                url: "/count",
+                success: function(result) {
+                    user.countries = result.count;
+                }
+            });
+	}
+    });
+    
+    // Make an ajax call to log the user out
+    $("#logout").click(function() {
+	$.ajax({
+            type: "POST",
+            url: "/logout",
+	});
+	user = {};
+	cover();
     });
 
     // This is a lengthy function to search for a selected country and set the iframe
@@ -46,13 +77,13 @@ $(document).ready(function() {
 		    $("iframe#geo_frame").show();
 		    // Have to manually resize sometimes because it do it on its own sometimes            
 		    if ($("iframe#geo_frame").width() > $(window).width()-324) {
-			// console.log("Resizing Geognos frame");
 			$("iframe#geo_frame").css("width",$(window).width()-324);
 		    }
 		    $("iframe#gov_frame").hide();
 		    // Add this to the custom "button"
 		    $("a#dest").html($("#c_list").val()).show().append("<span>!</span>");
 		    $("span#dest").show();
+		    $("span#result").hide();
 		    frame = 'geo';
 		    found = true;
 		    break;
@@ -63,16 +94,30 @@ $(document).ready(function() {
 
     // This is the functionality to add a country that you want to visit, if you have less than 10
     $("a#dest").click(function() {
-	if (country_count < 10) {
-	$.ajax({
-            url: '/add',
-	    type: 'POST',
-            data: {"country":$("#c_list").val()}
-	});
+	if (user.countries < 10) {
+	    var result = $.ajax({
+		url: '/add',
+		type: 'POST',
+		data: {"country":$("#c_list").val()}
+	    });
+	    result.done(function(res) {
+		$("span#result").show();
+		if (res.Error !== undefined) {
+		    // There was an error, likely they already want to visit this country
+		    $("span#result").html(res.Error);
+		    $("span#result").css("background-color","crimson");
+		}
+		else {
+		    $("span#result").html(res.Success);
+		    $("span#result").css("background-color","springgreen");
+		}
+	    });
 	}
 	else {
-	    alert("You are at 10 countries already,\nVisit (i.e. delete) a few first");
+	    alert("You are at 10 countries already,\nVisit (i.e. delete) a few first, then add more");
 	}
+	$("a#dest").hide();
+	$("span#dest").hide();
     });
 
     // These are the "tabs" that will switch between iframes and statistics
@@ -108,8 +153,15 @@ $(document).ready(function() {
             $("iframe#gov_frame").hide();
 	    $("table#top10").css("margin-left",$("table#stats").width());
             $("div#stats").show();
+	    listTop10();
             frame = 'stats';
         }
+    });
+
+    // Add the functionality for a user to click and remove a country of theirs
+    $("table#top10 td").click(function(event) {
+	var country = event.srcElement.innerHTML;
+	removeCountry(country);
     });
 
     // A bunch of stuff needs to be hidden at the beginning to make things look nicer
@@ -117,6 +169,7 @@ $(document).ready(function() {
     $("#no_match").hide();
     $("a#dest").hide();
     $("span#dest").hide();
+    $("span#result").hide();
     $("div#stats").hide();
     
     // Manually set the width of these frames
@@ -145,40 +198,12 @@ $(document).ready(function() {
             $("#no_match").hide();
         }
     });
-
-    // Use the title to determine if there's a user logged in, i.e. I'm too lazy to use cookies...
-    var title =$("title").html();
-    if (title === "Travel Aide Guest") {
-	cover();
-    }
-    else {
-	logged_in = true;
-	(function() {
-	    $.ajax({
-		type: "GET",
-		url: "/count",
-		success: function(result) {
-		    country_count = result.count;
-		}
-	    }); 
-	});
-    }
-    
-    // Make an ajax call to log the user out, then refresh the page (since Google Chrome likes to store
-    // sessions, if it didn't reload and you hit refresh, it'd keep you "logged in")
-    $("#logout").click(function() {
-	$.ajax({
-            type: "POST",
-            url: "/ta",
-	});
-	window.location.reload();
-    });
 });
 
 // Instead of taking the time to edit the XML file so that everything would parse nicely, I decided to use
 // regex instead to make it an acceptable form
 function capitalise(string) {
-     var ret = string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    var ret = string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     if(ret.match(/^Brunei.*$/)) {
 	ret = 'Brunei';
     }
@@ -208,13 +233,13 @@ function capitalise(string) {
 function parseXml(xml) {
     $("#c_list").append("<option></option><br>"); // add a blank option
     $(xml).find("List").each(function() {
-	    $(this).find("Entry").each( function() {
-		var c = capitalise($(this).find("Name").text().toLowerCase());
-		if (c !== null) {
-		    $("#c_list").append("<option>"+c+"</option><br>");
-		}
-	    });
+	$(this).find("Entry").each( function() {
+	    var c = capitalise($(this).find("Name").text().toLowerCase());
+	    if (c !== null) {
+		$("#c_list").append("<option>"+c+"</option><br>");
+	    }
 	});
+    });
 }
 
 // This function lists the possible currencies as "options"
@@ -247,7 +272,6 @@ function listPopular() {
 	// Put the header back in
 	$("table#stats thead").append("<tr colspan='2'><th class=\"theader\" colspan=2>Most Popular Countries</th></tr><tr><th>Country</th><th>Count</th></tr>");
         var table = $("table#stats tbody:last");
-        // console.log("Adding countries/counts to the table using data "+data);                         
         for(var i = 0; i < data.countries.length; i++) {
             table.after('<tr><td>'+data.countries[i].country+'</td><td>'+data.countries[i].count+'</td></tr>');
         }
@@ -261,14 +285,35 @@ function listTop10() {
         url: "/10",
     });
     req.done(function(data) {
+	$("table#top10 tr").remove(); 
+        $("table#top10 thead").append("<tr><th class=\"theader\">Your Countries</th></tr><tr><th>Country</th></tr>");
         var table = $("table#top10 tbody:last"); 
-	var ten = data.top10.length;
+	var ten = data.length;
 	if (ten > 10) {
 	    // This should never happen
 	    ten = 10;
 	}
         for(var i = 0; i < ten; i++) {
-            table.after('<tr><td>'+data.top10[i].destination+'</td>></tr>');
+            table.after('<tr><td>'+data[i].destination+'</td>></tr>');
         }
     });
 }
+
+function removeCountry(country) {
+    var req = $.ajax({
+        type: "POST",
+        url: "/remove",
+	data: {"country":country}
+    });
+    req.done(function(response) {
+	if (response.Error !== undefined) {
+	    // There was some kind of error
+	    $("span#result").html(response.Error);
+	    $("span#result").show();
+	}
+	else {
+	    $("span#result").html(response.Success);
+            $("span#result").show();
+	}
+    });
+};

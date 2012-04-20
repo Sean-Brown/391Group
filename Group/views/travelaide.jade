@@ -14,35 +14,34 @@ body
 div(id="cover")
  div(id="login")
   - var msg = message
-  p(style="text-align:center; font-size:16px")= msg
-   form(id="login", method="post")
-    fieldset
-     legend Login 
-     p
-      label UserName: 
-      input(type="text", placeholder="UserName", name="uname", required) 
-     p
-      label Password: 
-      input(type="password", min="7", name="upass", required) 
-     p
-      input(type="submit", value="Login") 	       
-   p(style="text-align: center") OR
-   form(id="create", method="post)
-    fieldset 
-     legend Create New Account 
-     p
-      label UserName: 
-      input(input type="text", placeholder="UserName", name="uname", value pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,20}$", required) 
-     p
-      label Password: 
-      input(type="password", class="upass2", name="upass", required) 
-     p Requires 1 number, 1 capital letter, minimum 7 characters
-     p
-      label Re-type Password: 
-      input(type="password", class="upass2", name="upass2", required)
-      span(id="no_match") Does not match first password.
-     p
-      input(type="submit", value="Create Account")
+  p(style="text-align:center; font-size:20px; font-weight:bold; background-color:palegoldenrod")= msg
+  form(id="login", method="post", action="/login")
+   fieldset
+    legend Login 
+    p
+     label UserName: 
+     input(type="text", placeholder="UserName", name="uname", required) 
+    p
+     label Password: 
+     input(type="password", min="7", name="upass", required) 
+    p
+     input(type="submit", value="Login") 	       
+  p(style="text-align: center") OR
+  form(id="create", method="post", action="/create")
+   fieldset 
+    legend Create New Account 
+    p
+     label UserName: 
+     input(input type="text", placeholder="UserName", name="uname", value pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,20}$", required) 
+    p
+     label Password: 
+     input(type="password", class="upass2", name="upass", required) 
+    p
+     label Re-type Password: 
+     input(type="password", class="upass2", name="upass2", required)
+     span(id="no_match") Does not match first password.
+    p
+     input(type="submit", value="Create Account")
 
 div(id="currency")
   label Amount To Convert:
@@ -55,7 +54,7 @@ div(id="currency")
   select(id="currTo") 
   &nbsp
   label Result: 
-  span(id="convResult")
+  span(id="Result")
   input(type="button",id="logout",value="Logout")
 
 div(id="country")
@@ -64,6 +63,7 @@ div(id="country")
   &nbsp
   span(id='dest') I want to go to 
   a(type="button",id='dest')
+  span(id='result')
   &nbsp
   span(id='geo') Geognos 
   span(id='gov') Travel.gov 

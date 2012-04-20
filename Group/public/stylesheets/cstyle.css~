@@ -40,11 +40,28 @@ div#stats {
 
 table#stats {
     text-align: center;
-    margin-left: 50%;
+    margin-left: 0px;
+    float: left;
     color: red;
-    border: 1px;
+    border: 2px;
     border-color: black;
     border-style: solid;
+    border-collapse: collapse;
+    font-size: 24px;
+    height: 600px;
+    overflow: scroll;
+}
+
+table#top10 {
+    text-align: center;
+    color: red;
+    border: 2px;
+    border-color: black;
+    border-style: solid;
+    border-collapse: collapse;
+    font-size: 24px;
+    height: 600px;
+    overflow: scroll;
 }
 
 span#geo:hover {
@@ -108,18 +125,10 @@ a#dest:hover {
     text-decoration: none;    
 }
 
-tr {
-    margin: 0px;
+tr,td {
     text-align: center;
     vertical-align: middle;
-}
-
-td {
-    margin: 0px;
-    text-align: center;
-    vertical-align: middle;
-    border-top: 1px;
-    border-bottom: 1px;
+    border: 1px;
     border-color: black;
     border-style: solid;
 }
@@ -132,7 +141,7 @@ th {
     text-align: center;
 }
 
-th#theader {
+th.theader {
     border-bottom: 2px;
     border-color: black;
     border-style: solid;

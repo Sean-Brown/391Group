@@ -12,6 +12,8 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.cookieParser());
+  app.use(express.session({secret: 'travelaide'}));
   app.use(express.static(__dirname + '/public'));
   app.use(app.router);
 });
@@ -34,11 +36,17 @@ app.error(function(err, req, res, next){
 
 // Routes
 app.get('/ta', routes.ta);
-app.post('/ta', routes.lilo);
-app.post('/add', routes.add);
 app.get('/list', routes.list);
 app.get('/10', routes.top10);
 app.get('/count', routes.count);
+app.get('/login', routes.login);
+app.post('/create', routes.create);
+app.post('/login', routes.login);
+app.post('/logout', routes.logout);
+app.post('/add', routes.add);
+app.post('/ta', routes.login);
+app.post('/logged_in', routes.logged_in);
+app.post('/remove', routes.removeCountry);
 
 app.listen(5069);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

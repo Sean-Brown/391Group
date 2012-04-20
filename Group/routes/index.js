@@ -1,70 +1,69 @@
 var pg = require('pg').native;
 var conn = 'tcp://smbrown:smbrown@db-edlab.cs.umass.edu:7391/';
-var user = {}
+var user = '';
 
 /*
  * GET home page.
  */
 exports.ta = function(req, res) {
-    // The home page using lazy verification (verify the user based on the title of the page)
-    if (user.name === undefined) {
-	// No user
-	res.render('travelaide', {title: 'Travel Aide Guest', message: 'Welcome'});
-    }
-    else {
+    if (user !== '') {
 	// There is a user
-	res.render('travelaide', {title: 'Travel Aide', message: 'Welcome'});
+	req.session.user = user;
     }
+    res.render('travelaide', {title: 'TravelAide', message: 'Welcome'});    
 };
 
-// lilo = login logout
-exports.lilo = function(req, res) {
-    if (user.name !== undefined) {
-	// User logged in, requesting to log out
-	user = {};
-	res.render('travelaide', {title: 'TravelAide Guest', message: 'Welcome'});
-    }
-    else if (req.body.upass2 !== undefined) {
-	// an attempt to create an account
-	createNewAccount(req.body.uname, req.body.upass, function(err, obj) {
-	    if (err) {
-		console.log("Could not add user "+req.body.uname+": "+err);
-		res.render('travelaide', {title: 'Travel Aide Guest', message: 'Unable To Create Account'});
-	    }
-	    else {
-		console.log("Successfully added "+req.body.uname);
-		res.render('travelaide', {title: 'Travel Aide Guest', message: 'Account Created Successfully'});
-	    }
-	});
-    }
-    else {
-	// A login attempt, call the verifyLogin helper function (further down)
-	verifyLogin(req.body.uname, req.body.upass, function(err, result) {
-	    if (result === undefined) {
-		console.log(err);
-		res.render('travelaide', {title: 'Travel Aide Guest', message: 'Login Failed'});
-	    }
-	    else {
-		// A valid login, set the user object
-		user = {"name": req.body.uname};
-		console.log("User "+user.name+" logged in");
-		// Yay lazy verification!
-		res.render('travelaide', {title: 'Travel Aide', message: 'Welcome'});
-	    }
-	});
-    }
+// Create an account
+exports.create = function(req, res) {
+    // an attempt to create an account                                                                    
+    createNewAccount(req.body.uname, req.body.upass, function(err, obj) {
+        if (err) {
+            console.log("Could not add user "+req.body.uname+": "+err);
+            res.render('travelaide', {title: 'Travel Aide Guest', message: 'Unable To Create Account'});
+        }
+        else {
+            console.log("Successfully added "+req.body.uname);
+	    res.redirect('/ta');
+        }
+    });
+};
+
+exports.login = function(req, res) {
+    // A login attempt, call the verifyLogin helper function (further down)
+    verifyLogin(req.body.uname, req.body.upass, function(err, result) {
+	if (result.rows.length === 0) {
+	    res.render('travelaide', {title: 'Travel Aide Guest', message: 'Welcome, Please Log In'});
+	}
+	else {
+	    // A valid login, set the user object
+	    user = result.rows[0].name;
+	    console.log("User "+user+" logged in");
+	    req.session.user = user;
+	    res.redirect('/ta');
+	}
+    });
+};
+
+// User logged in, requesting to log out
+exports.logout = function(req, res) {
+    user = '';
+    req.session.destroy();
+    res.redirect('/ta');
 };
 
 // Add a destination country for this user using the addCountry helper function
 exports.add = function (req, res) {
-    addCountry(user.name, req.body.country, function(err, result) {
+    addCountry(user, req.body.country, function(err, result) {
 	if (err) {
 	    console.log("Error adding country: "+err);
+	    res.contentType('application/json');
+            res.send({'Error':'Could not add '+req.body.country+', it\'s likely already on your list.'});
 	}
 	else {
 	    console.log("Successfully added country: "+req.body.country);
+	    res.contentType('application/json');
+            res.send({'Success':'Successfully added '+req.body.country});
 	}
-	res.render('travelaide', {title: 'Travel Aide', message: 'Country Added'});
     });
 };
 
@@ -91,7 +90,7 @@ exports.top10 = function (req, res) {
             ret.push(result.rows[i]);
         }
         res.contentType('application/json');
-        res.send({'top10':ret});
+        res.send(ret);
     });
 };
 
@@ -99,7 +98,27 @@ exports.top10 = function (req, res) {
 exports.count = function (req, res) {
     getCount(function(err, result) {
         res.contentType('application/json');
-        res.send({'count':result.rows[0]});
+        res.send(result.rows[0]);
+    });
+};
+
+// Tells if there's a user
+exports.logged_in = function (req, res) {
+    res.contentType('application/json');
+    res.send({'user':user});
+};
+
+exports.removeCountry = function (req, res) {
+    deleteCountry(req.body.country,function(err, result) {
+	if (err) {
+	    console.log("Error removing country "+req.country+" for user "+user);
+	    res.contentType('application/json');
+	    res.send({'Error':'Error removing '+req.body.country+', try again later'});
+	}
+	else {
+	    res.contentType('application/json');
+	    res.send({'Success':'Successfully removed '+req.body.country});
+	}
     });
 };
 
@@ -120,10 +139,10 @@ function verifyLogin(uname, upass, cb) {
         if (err) {
 	    throw err;
         }
-        client.query('SELECT name FROM users WHERE name=$1 AND pass=$2;', [uname,upass],
-                                 function (err, result) {
-				     cb(err, result)
-                                 });
+        client.query('SELECT name FROM users WHERE name=$1 AND pass=$2', [uname,upass],
+                     function (err, result) {
+			 cb(err, result);
+                     });
     });
 };
 
@@ -144,10 +163,10 @@ function listCountries(cb) {
         if (err) {
             throw err;
         }
-        client.query('SELECT destination,COUNT(*) FROM dests GROUP BY destination ORDER BY COUNT(*) DESC;',
-                                 function (err, result) {
-                                     cb(err, result)
-                                 });
+        client.query('SELECT destination,COUNT(*) FROM dests GROUP BY destination ORDER BY COUNT(*) ASC;',
+                     function (err, result) {
+                         cb(err, result)
+                     });
     });
 };
 
@@ -157,7 +176,7 @@ function list10(cb) {
         if (err) {
             throw err;
         }
-        client.query('SELECT destination FROM dests WHERE name=$1;', [user.name],
+        client.query('SELECT destination FROM dests WHERE name=$1;', [user],
                      function (err, result) {
                          cb(err, result)
                      });
@@ -170,7 +189,20 @@ function getCount(cb) {
         if (err) {
             throw err;
         }
-        client.query('SELECT count(*) FROM dests WHERE name=$1;', [user.name],
+        client.query('SELECT count(*) FROM dests WHERE name=$1;', [user],
+                     function (err, result) {
+                         cb(err, result)
+                     });
+    });
+};
+
+// The helper function to delete a country for a user
+function deleteCountry(country, cb) {
+    pg.connect(conn, function (err, client) {
+        if (err) {
+            throw err;
+        }
+        client.query('DELETE FROM dests WHERE destination=$1 AND name=$2;', [country,user],
                      function (err, result) {
                          cb(err, result)
                      });
