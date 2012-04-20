@@ -29,12 +29,12 @@ $(document).ready(function() {
 	type: "POST",
 	url: "/logged_in"
     });
-    logged_in.done(function() {
-	if (logged_in.responseText === undefined || logged_in.responseText === "{\"user\":\"\"}") {
+    logged_in.done(function(data) {
+	if (data.user === '') {
 	    cover();
 	}
 	else {
-	    user.name = result.name;
+	    user.name = data.user;
 	    $.ajax({
 		type: "GET",
                 url: "/count",
@@ -77,7 +77,6 @@ $(document).ready(function() {
 		    $("iframe#geo_frame").show();
 		    // Have to manually resize sometimes because it do it on its own sometimes            
 		    if ($("iframe#geo_frame").width() > $(window).width()-324) {
-			// console.log("Resizing Geognos frame");
 			$("iframe#geo_frame").css("width",$(window).width()-324);
 		    }
 		    $("iframe#gov_frame").hide();
@@ -273,7 +272,6 @@ function listPopular() {
 	// Put the header back in
 	$("table#stats thead").append("<tr colspan='2'><th class=\"theader\" colspan=2>Most Popular Countries</th></tr><tr><th>Country</th><th>Count</th></tr>");
         var table = $("table#stats tbody:last");
-        // console.log("Adding countries/counts to the table using data "+data);                         
         for(var i = 0; i < data.countries.length; i++) {
             table.after('<tr><td>'+data.countries[i].country+'</td><td>'+data.countries[i].count+'</td></tr>');
         }

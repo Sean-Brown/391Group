@@ -37,7 +37,7 @@ app.error(function(err, req, res, next){
 // Routes
 app.get('/ta', routes.ta);
 app.get('/list', routes.list);
-app.get('/10', routes.top10);
+app.get('/my_countries', routes.my_countries);
 app.get('/count', routes.count);
 app.get('/login', routes.login);
 app.post('/create', routes.create);

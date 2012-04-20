@@ -153,15 +153,9 @@ $(document).ready(function() {
             $("iframe#gov_frame").hide();
 	    $("table#top10").css("margin-left",$("table#stats").width());
             $("div#stats").show();
-	    listTop10();
+	    listMyCountries();
             frame = 'stats';
         }
-    });
-
-    // Add the functionality for a user to click and remove a country of theirs
-    $("table#top10 td").click(function(event) {
-	var country = event.srcElement.innerHTML;
-	removeCountry(country);
     });
 
     // A bunch of stuff needs to be hidden at the beginning to make things look nicer
@@ -279,41 +273,17 @@ function listPopular() {
 }
 
 // A very similar function that lists the countries a user wants to visit (at most 10)
-function listTop10() {
+function listMyCountries() {
     var req = $.ajax({
         type: "GET",
-        url: "/10",
+        url: "/my_countries",
     });
     req.done(function(data) {
 	$("table#top10 tr").remove(); 
         $("table#top10 thead").append("<tr><th class=\"theader\">Your Countries</th></tr><tr><th>Country</th></tr>");
         var table = $("table#top10 tbody:last"); 
-	var ten = data.length;
-	if (ten > 10) {
-	    // This should never happen
-	    ten = 10;
-	}
-        for(var i = 0; i < ten; i++) {
+        for(var i = 0; i < data.length; i++) {
             table.after('<tr><td>'+data[i].destination+'</td>></tr>');
         }
     });
 }
-
-function removeCountry(country) {
-    var req = $.ajax({
-        type: "POST",
-        url: "/remove",
-	data: {"country":country}
-    });
-    req.done(function(response) {
-	if (response.Error !== undefined) {
-	    // There was some kind of error
-	    $("span#result").html(response.Error);
-	    $("span#result").show();
-	}
-	else {
-	    $("span#result").html(response.Success);
-            $("span#result").show();
-	}
-    });
-};

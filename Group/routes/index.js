@@ -82,8 +82,8 @@ exports.list = function (req, res) {
 };
 
 // List the countries a user wants to visit (maximum of 10)
-exports.top10 = function (req, res) {
-    list10(function(err, result) {
+exports.my_countries = function (req, res) {
+    listMyCountries(function(err, result) {
         // Create the return array
         var ret = [];
         for(var i = 0; i < result.rows.length; i++) {
@@ -171,7 +171,7 @@ function listCountries(cb) {
 };
 
 // The helper function for listing the countries a specific user wants to visit
-function list10(cb) {
+function listMyCountries(cb) {
     pg.connect(conn, function (err, client) {
         if (err) {
             throw err;

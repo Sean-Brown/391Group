@@ -39,7 +39,7 @@ app.get('/ta', routes.ta);
 app.get('/list', routes.list);
 app.get('/10', routes.top10);
 app.get('/count', routes.count);
-APP.GET('/login', routes.login);
+app.get('/login', routes.login);
 app.post('/create', routes.create);
 app.post('/login', routes.login);
 app.post('/logout', routes.logout);
