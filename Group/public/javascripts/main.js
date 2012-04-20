@@ -264,10 +264,11 @@ function listTop10() {
         var table = $("table#top10 tbody:last"); 
 	var ten = data.top10.length;
 	if (ten > 10) {
+	    // This should never happen
 	    ten = 10;
 	}
         for(var i = 0; i < ten; i++) {
-            table.after('<tr><td>'+data.top10[i]+'</td>></tr>');
+            table.after('<tr><td>'+data.top10[i].destination+'</td>></tr>');
         }
     });
 }
