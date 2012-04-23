@@ -227,7 +227,7 @@ function bindClicks() {
 		$("span#result").css("background-color","crimson");
 	    }
 	    else {
-		if ($("span#stats").is(":visible")) {
+		if ($("div#stats").is(":visible")) {
 		    // Simulate a click to refresh the tables
 		    $("span#stats").click();
 		}

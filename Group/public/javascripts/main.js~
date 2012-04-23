@@ -300,8 +300,7 @@ function bindClicks() {
             type: "POST",
             url: "/logout",
 	});
-	user = '';
-	cover();
+	location.reload();
     });
 
     // Bind the remove account button to remove account
