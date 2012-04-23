@@ -11,6 +11,10 @@ script(type="text/javascript", src="/javascripts/money.js")
 head
 body
 
+- var cov = cvr
+input(id="cover",value=cov,style="visibility:hidden; width:0px; heigh:0px")
+- var usr = user
+div(id="welcome",class=usr)
 div(id="cover")
  div(id="login")
   - var msg = message
@@ -39,22 +43,23 @@ div(id="cover")
     p
      label Re-type Password: 
      input(type="password", class="upass2", name="upass2", required)
+     br
      span(id="no_match") Does not match first password.
     p
      input(type="submit", value="Create Account")
 
 div(id="currency")
-  label Amount To Convert:
+  label(class="curr") Amount To Convert:
   input(type="text", value pattern="^[0-9]{1,7}$", placeholder="Amount", id="amount")
   &nbsp
-  label From:
+  label(class="curr") From:
   select(id="currFrom")
   &nbsp
-  label To:
+  label(class="curr") To:
   select(id="currTo") 
   &nbsp
-  label Result: 
-  span(id="Result")
+  label(class="curr",id="cresult") Result: 
+  span(id="convResult")
   input(type="button",id="logout",value="Logout")
 
 div(id="country")
@@ -84,7 +89,7 @@ div(id="stats")
       th Country
       th Count
     tbody
-  table(id="top10")
+  table(id="my_countries")
     thead
      tr(colspan=2)
       th(class='theader') Your Countries

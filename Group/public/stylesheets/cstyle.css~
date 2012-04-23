@@ -1,8 +1,21 @@
+body {
+    background-image: url('../images/old_globe.jpg');
+    margin-top: -20px;
+}
+
 body#error {
-    background-image: url('http://retardzone.com/rz4/images/404.jpg');
-    background-size: 100%;
+    background-image: url('../images/custom404.jpg');
+    background-position-x: center;
+    background-size: 50%;
+    background-repeat: no-repeat;
+}
+
+div#welcome {
     text-align: center;
-    text-size: 36px;
+    font-size: 48px;
+    font-weight: bold;
+    text-shadow: 3.5px 1.5px 1.5px black;
+    color: burlyWood;
 }
 
 div#cover {
@@ -12,7 +25,8 @@ div#cover {
     top: 0px;
     width: 100%;
     background: gray;
-    opacity: 0.8;
+    opacity: .8;
+    z-index: 98;
 }
 
 div#login {
@@ -27,20 +41,25 @@ div#login {
 }
 
 div#currency {
-
+    background: none;
+    opacity: 0.9;
+    color: burlyWood;
+    text-shadow: 1.5px 1.5px 1.5px black;
+    font-size: 24px;
 }
 
 div#country {
-
+    background-color: wheat;
+    opacity: 0.9;
 }
 
 div#stats {
-
+    overflow: scroll;
 }
 
 table#stats {
     text-align: center;
-    margin-left: 0px;
+    margin-left: 20%;
     float: left;
     color: red;
     border: 2px;
@@ -53,7 +72,7 @@ table#stats {
     background-color: black;
 }
 
-table#top10 {
+table#my_countries {
     text-align: center;
     color: lightskyblue;
     background-color: black;
@@ -64,6 +83,11 @@ table#top10 {
     font-size: 24px;
     height: 600px;
     overflow: scroll;
+}
+
+td.data:hover,active {
+    cursor: pointer;
+    background-color: red;
 }
 
 tr,td {
@@ -100,38 +124,63 @@ span#result {
     border-style: ridge;
 }
 
+span#geo {
+    float: right;
+    margin-right: 20px;
+    margin-left: 5px;
+}
+
+span#gov, span#stats {
+    float: right;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
 span#geo:hover {
     background-color: lightgreen;
+    cursor: pointer;
 }
 
 span#gov:hover {
     background-color: lightblue;
+    cursor: pointer;
 }
 
 span#stats:hover {
-    background-color: wheat;
+    background-color: red;
+    cursor: pointer;
 }
 
 span#convResult {
-    background-color: lightgray;
+    background-color: whitesmoke;
+    border-radius: 10px;
+}
+
+iframe {
+    background-color: white;
+    opacity: 0.85;
 }
 
 iframe#gov_frame {
    width: 1000px;
-   height: 600px;
+   height: 700px;
    float: right;
+   opacity: 0.95;
 }
 
 iframe#geo_frame {
     width: 1000px;
-    height: 600px;
+    height: 700px;
     float: right;
+    opacity: 0.95;
 }
 
 iframe#cframe {
     width: 300px;
-    height: 600px;
+    height: 700px;
     float: left;
+    opacity: 0.9;
+    background: beige;
 }
 
 select#c_list {
@@ -143,20 +192,28 @@ form {
 }
 
 input#logout {
-    float: right;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 24px;
 }
 
 a#dest {
     border: 1px solid black;
+    color: white;
     padding: 0px 2px 0px 2px;
-    background-color: lightcoral;
+    background-color: cadetBlue;
     border-radius: 6px;
-    -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
 }
 
 a#dest:hover {
-    background-color: lightgoldenrodyellow;
-    background-image: -moz-linear-gradient(green, red);
+    background-color: darkslategrey;
     text-decoration: none;    
+    cursor: pointer;
+}
+
+label.curr {
+    background-color: white;
+    border-radius: 10px;
 }

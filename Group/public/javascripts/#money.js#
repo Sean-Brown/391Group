@@ -7,13 +7,13 @@
 $(document).ready(function() {
     // A call to get the current exchange rates
     $.getJSON('http://openexchangerates.org/latest.json', function(data) {
-	// Check money.js has finished loading:                                                             
+	// Check money.js has finished loading:                                       
         if (typeof fx !== "undefined" && fx.rates) {
             fx.rates = data.rates;
             fx.base = data.base;
 	}
         else {
-	    // If not, apply to fxSetup global:                                                              
+	    // If not, apply to fxSetup
             var fxSetup = {
 		rates: data.rates,
 		base: data.base
@@ -23,15 +23,12 @@ $(document).ready(function() {
 
     // The binding of these 3 elements to changes, which will trigger a calculation the conversion
     $('#amount').bind('change', function (event) {
-//	console.log('amount changed, calling convert()');
 	convert();
     });
     $('#currFrom').bind('change', function (event) {
-//        console.log('currFrom changed, calling convert()');
         convert();
     });
     $('#currTo').bind('change', function (event) {
-//        console.log('currTo changed, calling convert()');
         convert();
     });
 });

@@ -1,25 +1,28 @@
 var pg = require('pg').native;
 var conn = 'tcp://smbrown:smbrown@db-edlab.cs.umass.edu:7391/';
-var user = '';
 
 /*
  * GET home page.
  */
 exports.ta = function(req, res) {
-    if (user !== '') {
-	// There is a user
-	req.session.user = user;
+    // Set the header to not cache
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    if (req.session.user === undefined) {
+	res.render('travelaide', {title: 'TravelAide', message: 'Welcome, Please Log In', cvr: 'cov', user:''});    
     }
-    res.render('travelaide', {title: 'TravelAide', message: 'Welcome'});    
+    else {
+	res.render('travelaide', {title: 'TravelAide', message: 'Welcome', cvr: 'nocov', user: req.session.user});
+    }
 };
 
 // Create an account
 exports.create = function(req, res) {
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     // an attempt to create an account                                                                    
     createNewAccount(req.body.uname, req.body.upass, function(err, obj) {
         if (err) {
             console.log("Could not add user "+req.body.uname+": "+err);
-            res.render('travelaide', {title: 'Travel Aide Guest', message: 'Unable To Create Account'});
+            res.render('travelaide', {title: 'TravelAide Guest', message: 'Unable To Create Account', cvr: 'cov', user: ''});
         }
         else {
             console.log("Successfully added "+req.body.uname);
@@ -29,17 +32,17 @@ exports.create = function(req, res) {
 };
 
 exports.login = function(req, res) {
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     // A login attempt, call the verifyLogin helper function (further down)
     verifyLogin(req.body.uname, req.body.upass, function(err, result) {
-	if (result ===  '') {
-	    res.render('travelaide', {title: 'Travel Aide Guest', message: 'Welcome, Please Log In'});
+	if (result.rows.length === 0) {
+	    res.render('travelaide', {title: 'TravelAide Guest', message: 'Welcome, Please Log In',cvr:"cov",user: ''});
 	}
 	else {
 	    // A valid login, set the user object
-	    user = result;
-	    console.log("User "+user+" logged in");
-	    req.session.user = user;
-	    res.redirect('/ta');
+	    req.session.user = result.rows[0].name;
+	    console.log("User "+req.session.user+" logged in");
+	    res.render('travelaide', {title: 'TravelAide', message: 'Welcome', cvr: "nocov",user: req.session.user});
 	}
     });
 };
@@ -48,12 +51,12 @@ exports.login = function(req, res) {
 exports.logout = function(req, res) {
     user = '';
     req.session.destroy();
-    res.redirect('/ta');
+    res.redirect('/login');
 };
 
 // Add a destination country for this user using the addCountry helper function
 exports.add = function (req, res) {
-    addCountry(user, req.body.country, function(err, result) {
+    addCountry(req.session.user, req.body.country, function(err, result) {
 	if (err) {
 	    console.log("Error adding country: "+err);
 	    res.contentType('application/json');
@@ -63,6 +66,22 @@ exports.add = function (req, res) {
 	    console.log("Successfully added country: "+req.body.country);
 	    res.contentType('application/json');
             res.send({'Success':'Successfully added '+req.body.country});
+	}
+    });
+};
+
+// Remove a country for a user, it's very similar to adding a country
+exports.remove = function (req, res) {
+    deleteCountry(req.session.user,req.body.country, function(err, result) {
+	if (err) {
+	    console.log("Error removing country: "+err);
+	    res.contentType('application/json');
+            res.send({'Error':'Sorry, could not remove '+req.body.country});
+	}
+	else {
+	    console.log("Successfully removed country: "+req.body.country);
+	    res.contentType('application/json');
+            res.send({'Success':'Successfully removed '+req.body.country});
 	}
     });
 };
@@ -81,9 +100,9 @@ exports.list = function (req, res) {
     });
 };
 
-// List the countries a user wants to visit (maximum of 10)
-exports.top10 = function (req, res) {
-    list10(function(err, result) {
+// List the countries a user wants to visit
+exports.my_countries = function (req, res) {
+    listMyCountries(req.session.user, function(err, result) {
         // Create the return array
         var ret = [];
         for(var i = 0; i < result.rows.length; i++) {
@@ -94,31 +113,30 @@ exports.top10 = function (req, res) {
     });
 };
 
-// A simple function to count the number of countries a user wants to visit
-exports.count = function (req, res) {
-    getCount(function(err, result) {
-        res.contentType('application/json');
-        res.send(result.rows[0]);
-    });
-};
-
-// Tells if there's a user
-exports.logged_in = function (req, res) {
-    res.contentType('application/json');
-    res.send({'user':user});
-};
-
 exports.removeCountry = function (req, res) {
-    deleteCountry(req.body.country,function(err, result) {
+    deleteCountry(req.session.user, req.body.country,function(err, result) {
 	if (err) {
-	    console.log("Error removing country "+req.country+" for user "+user);
+	    console.log("Error removing country "+req.country+" for user "+req.session.user);
 	    res.contentType('application/json');
 	    res.send({'Error':'Error removing '+req.body.country+', try again later'});
 	}
 	else {
 	    res.contentType('application/json');
-	    res.send({'Success':'Successfully removed '+req.body.country});
+	    res.send({'Success':'Successfully removed '+req.body.country+' for '+req.session.user});
 	}
+    });
+};
+
+exports.remove_account = function (req, res) {
+    removeAccount(req.session.user, function(err, result) {
+	if (err) {
+	    console.log("User "+req.session.user+" unsuccessfully deleted their account, do it for them");
+	}
+	else {
+	    // ?
+	}
+	req.session.destroy();
+	res.redirect("/ta");
     });
 };
 
@@ -141,24 +159,13 @@ function verifyLogin(uname, upass, cb) {
         }
         client.query('SELECT name FROM users WHERE name=$1 AND pass=$2', [uname,upass],
                      function (err, result) {
-			 var usr = '';
-			 if (result.rows > 0) {
-			     var row = result.rows;
-			     for (var i=0;i<row.length;i++) {
-				 console.log("row[i] = "+row[i]);
-				 for(var prop in row[i]) {
-				     console.log("prop = "+prop);
-				 }
-			     }
-			     usr = result.rows[0];
-			 }
-			 cb(err, usr);
+			 cb(err, result);
                      });
     });
 };
 
 // The helper function for adding a country to the user's destinations
-function addCountry(user, country, cb) {
+function addCountry(user,country, cb) {
     pg.connect(conn, function (err, client) {
         var sql = 'INSERT INTO dests (name,destination) VALUES ($1,$2)';
         client.query(sql, [user,country],
@@ -182,25 +189,12 @@ function listCountries(cb) {
 };
 
 // The helper function for listing the countries a specific user wants to visit
-function list10(cb) {
+function listMyCountries(user,cb) {
     pg.connect(conn, function (err, client) {
         if (err) {
             throw err;
         }
-        client.query('SELECT destination FROM dests WHERE name=$1;', [user],
-                     function (err, result) {
-                         cb(err, result)
-                     });
-    });
-};
-
-// The helper function for getting a count of countries a user wants to visit
-function getCount(cb) {
-    pg.connect(conn, function (err, client) {
-        if (err) {
-            throw err;
-        }
-        client.query('SELECT count(*) FROM dests WHERE name=$1;', [user],
+        client.query('SELECT destination FROM dests WHERE name=$1 ORDER BY destination;', [user],
                      function (err, result) {
                          cb(err, result)
                      });
@@ -208,7 +202,7 @@ function getCount(cb) {
 };
 
 // The helper function to delete a country for a user
-function deleteCountry(country, cb) {
+function deleteCountry(user,country,cb) {
     pg.connect(conn, function (err, client) {
         if (err) {
             throw err;
@@ -217,5 +211,19 @@ function deleteCountry(country, cb) {
                      function (err, result) {
                          cb(err, result)
                      });
+    });
+};
+
+// The helper function for account deletion
+function removeAccount(user, cb) {
+    pg.connect(conn, function (err, client) {
+	if (err) {
+	    throw err;
+	}
+	client.query('DELETE FROM users WHERE name=$1;', [user]);
+	client.query('DELETE FROM dests WHERE name=$1;', [user],
+		     function (err, result) {
+			 cb (err, result);
+		     });
     });
 };

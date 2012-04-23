@@ -285,10 +285,6 @@
       <Code>FR</Code>
    </Entry>
    <Entry>
-      <Name>FRENCH GUIANA</Name>
-      <Code>GF</Code>
-   </Entry>
-   <Entry>
       <Name>FRENCH POLYNESIA</Name>
       <Code>PF</Code>
    </Entry>
@@ -447,14 +443,6 @@
    <Entry>
       <Name>KIRIBATI</Name>
       <Code>KI</Code>
-   </Entry>
-   <Entry>
-      <Name>KOREA North</Name>
-      <Code>KP</Code>
-   </Entry>
-   <Entry>
-      <Name>KOREA South</Name>
-      <Code>KR</Code>
    </Entry>
    <Entry>
       <Name>KUWAIT</Name>
@@ -641,6 +629,10 @@
       <Code>MP</Code>
    </Entry>
    <Entry>
+      <Name>North Korea</Name>
+      <Code>KP</Code>
+   </Entry>
+   <Entry>
       <Name>NORWAY</Name>
       <Code>NO</Code>
    </Entry>
@@ -795,6 +787,10 @@
    <Entry>
       <Name>SOUTH AFRICA</Name>
       <Code>ZA</Code>
+   </Entry>
+   <Entry>
+      <Name>South Korea</Name>
+      <Code>KR</Code>
    </Entry>
    <Entry>
       <Name>SPAIN</Name>

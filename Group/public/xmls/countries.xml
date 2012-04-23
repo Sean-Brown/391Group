@@ -445,14 +445,6 @@
       <Code>KI</Code>
    </Entry>
    <Entry>
-      <Name>KOREA North</Name>
-      <Code>KP</Code>
-   </Entry>
-   <Entry>
-      <Name>KOREA South</Name>
-      <Code>KR</Code>
-   </Entry>
-   <Entry>
       <Name>KUWAIT</Name>
       <Code>KW</Code>
    </Entry>
@@ -531,10 +523,6 @@
    <Entry>
       <Name>MARSHALL ISLANDS</Name>
       <Code>MH</Code>
-   </Entry>
-   <Entry>
-      <Name>MARTINIQUE</Name>
-      <Code>MQ</Code>
    </Entry>
    <Entry>
       <Name>MAURITANIA</Name>
@@ -635,6 +623,10 @@
    <Entry>
       <Name>NORTHERN MARIANA ISLANDS</Name>
       <Code>MP</Code>
+   </Entry>
+   <Entry>
+      <Name>North Korea</Name>
+      <Code>KP</Code>
    </Entry>
    <Entry>
       <Name>NORWAY</Name>
@@ -791,6 +783,10 @@
    <Entry>
       <Name>SOUTH AFRICA</Name>
       <Code>ZA</Code>
+   </Entry>
+   <Entry>
+      <Name>South Korea</Name>
+      <Code>KR</Code>
    </Entry>
    <Entry>
       <Name>SPAIN</Name>
