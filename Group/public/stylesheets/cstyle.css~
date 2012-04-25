@@ -198,6 +198,13 @@ input#logout {
     font-size: 24px;
 }
 
+input#remove_account {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-size: 24px;
+}
+
 a#dest {
     border: 1px solid black;
     color: white;

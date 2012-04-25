@@ -6,6 +6,7 @@ meta http-equiv="Content-Type" content="text/html" charset=UTF-8
 title= ttl
 link(type="text/css", rel="stylesheet", href="/stylesheets/cstyle.css")
 script(type="text/javascript", src="http://code.jquery.com/jquery-1.7.2.min.js")
+script(type="text/javascript", src="/json/currencies.js")
 script(type="text/javascript", src="/javascripts/main.js")
 script(type="text/javascript", src="/javascripts/money.js")
 head
@@ -61,6 +62,7 @@ div(id="currency")
   label(class="curr",id="cresult") Result: 
   span(id="convResult")
   input(type="button",id="logout",value="Logout")
+  input(type="button",id="remove_account",value="Remove My Account")
 
 div(id="country")
   label View a Country 

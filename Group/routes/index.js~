@@ -4,14 +4,14 @@ var conn = 'tcp://smbrown:smbrown@db-edlab.cs.umass.edu:7391/';
 /*
  * GET home page.
  */
-exports.ta = function(req, res) {
+exports.home = function(req, res) {
     // Set the header to not cache
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     if (req.session.user === undefined) {
-	res.render('travelaide', {title: 'TravelAide', message: 'Welcome, Please Log In', cvr: 'cov', user:''});    
+	res.redirect('/login');
     }
     else {
-	res.render('travelaide', {title: 'TravelAide', message: 'Welcome', cvr: 'nocov', user: req.session.user});
+	res.render('travelaide', {title: 'TravelAide', user: req.session.user});    
     }
 };
 
@@ -22,11 +22,12 @@ exports.create = function(req, res) {
     createNewAccount(req.body.uname, req.body.upass, function(err, obj) {
         if (err) {
             console.log("Could not add user "+req.body.uname+": "+err);
-            res.render('travelaide', {title: 'TravelAide Guest', message: 'Unable To Create Account', cvr: 'cov', user: ''});
+            res.render('login', {title: 'TravelAide Login', message: 'Unable To Create Account'});
         }
         else {
             console.log("Successfully added "+req.body.uname);
-	    res.redirect('/ta');
+	    req.session.user = req.body.uname;
+	    res.redirect('/');
         }
     });
 };
@@ -36,20 +37,19 @@ exports.login = function(req, res) {
     // A login attempt, call the verifyLogin helper function (further down)
     verifyLogin(req.body.uname, req.body.upass, function(err, result) {
 	if (result.rows.length === 0) {
-	    res.render('travelaide', {title: 'TravelAide Guest', message: 'Welcome, Please Log In',cvr:"cov",user: ''});
+	    res.render('login',{title: "TravelAide Guest", message:"Login failed, try again"});
 	}
 	else {
 	    // A valid login, set the user object
 	    req.session.user = result.rows[0].name;
 	    console.log("User "+req.session.user+" logged in");
-	    res.render('travelaide', {title: 'TravelAide', message: 'Welcome', cvr: "nocov",user: req.session.user});
+	    res.redirect('/');
 	}
     });
 };
 
 // User logged in, requesting to log out
 exports.logout = function(req, res) {
-    user = '';
     req.session.destroy();
     res.redirect('/login');
 };
@@ -136,7 +136,7 @@ exports.remove_account = function (req, res) {
 	    // ?
 	}
 	req.session.destroy();
-	res.redirect("/ta");
+	res.redirect("/login");
     });
 };
 

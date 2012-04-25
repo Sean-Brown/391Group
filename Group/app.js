@@ -35,28 +35,15 @@ app.error(function(err, req, res, next){
 });
 
 // Routes
-app.get('/ta', routes.ta);
+app.get('/', routes.home);
 app.get('/list', routes.list);
 app.get('/my_countries', routes.my_countries);
 app.get('/login', routes.login);
-app.get('/json', function(req,res) {
-    res.contentType('json');
-    res.sendfile('public/json/currencies.json', function(err) {
-	if(err) {
-//	    console.log("Error sending currencies.json");
-	}
-	else {
-//	    console.log("Successfully sent currencies.json");
-	}
-    });
-});
 app.post('/create', routes.create);
 app.post('/login', routes.login);
 app.post('/logout', routes.logout);
 app.post('/add', routes.add);
-app.post('/remove', routes.remove);
-app.post('/ta', routes.login);
-app.post('/remove', routes.removeCountry);
+app.post('/removeCountry', routes.removeCountry);
 app.post('/remove_account', routes.remove_account);
 // Custom 404 page
 app.get('*', function(req,res) {

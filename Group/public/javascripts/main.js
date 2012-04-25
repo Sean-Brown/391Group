@@ -1,56 +1,26 @@
 var countries = []; // The list of countries, useful for loading Geognos links
 var frame = 'gov'; // Tells what the current frame is for 'frame'
 var user = ''; // The user name
-var currencies = []; // The array of currency "objects"
 
 /**
  * This does the bulk of the initialization when the document is "ready"
  */
 $(document).ready(function() {
-    // First check if there's a user logged in
-    if ($("input#cover").val() === "cov") {
-	// There's no user logged in, so cover it
-	cover();
-	$("div#welcome").hide();
-	// Disabling these divs will prevent the non-logged in person from
-	// seeing these parts of the app
-	$("table#stats").hide().prop("disabled", true);
-	$("table#my_countries").hide().prop("disabled", true);
-	$("div#currency").hide().prop("disabled", true);
-	$("div#country").hide().prop("disabled", true);
-	$("div#frame").hide().prop("disabled", true);
-	$("div#stats").hide().prop("disabled", true);
-	$(window).mousemove(function() {
-	    if ($("div#cover").attr("display") !== "block") {
-		$("div#cover").css("display","block");
-	    }
-	});
-    }
-    else {
-	user = $("div#welcome").attr("class");
-	$("div#welcome").html("Welcome "+user);
-	$("div#welcome").show();
-	if ($(window).width() < 1270) {
-	    $("label#cresult").before("<br id=\"special\">");
-	}
-	// A bunch of stuff needs to be hidden at the beginning to make things look nicer
-	$("iframe#geo_frame").hide();
-	$("#no_match").hide();
-	$("a#dest").hide();
-	$("span#dest").hide();
-	$("span#result").hide();
-	$("div#stats").hide();
-	$("iframe#cframe").hide();
+    user = $("div#welcome").attr("class");
+    $("div#welcome").html("Welcome "+user);
 
-	// Travel.gov will be the first thing active, so set its background color to the 
-	// "active" color (i.e. royalblue)
-	$("span#gov").css("background","royalblue");
-	
-	// Manually set the width of these frames
-	$("iframe#gov_frame").css("width",$(window).width()-324);
-	$("iframe#geo_frame").css("width",$(window).width()-324);
+    if ($(window).width() < 1270) {
+	$("label#cresult").before("<br id=\"special\">");
     }
+
+    // Travel.gov will be the first thing active, so set its background color to the 
+    // "active" color (i.e. royalblue)
+    $("span#gov").css("background","royalblue");
     
+    // Manually set the width of these frames
+    $("iframe#gov_frame").css("width",$(window).width()-324);
+    $("iframe#geo_frame").css("width",$(window).width()-324);
+
     // Get the countries and parse them
     $.ajax({
 	type: "GET",
@@ -70,26 +40,25 @@ $(document).ready(function() {
 	}
     });
     
-    // Get that giant json file and basically re-create it in a variable
-    $.getJSON('json', function(data) {
-	$.each(data, function(key,value) {
-	    // Push each currency and its associated country(ies)
-	    currencies.push("{\"abv\":\""+value.abv+"\",\"name\":\""+value.name+"\",\"countries\":[\""+value.countries+"\"]}");
-	});
-	// Sort it to make it look nicer
-	currencies.sort(function(a,b) {
-	    var a1 = jQuery.parseJSON(a).name.toLowerCase().split(' ').join('');
-	    var b1 = jQuery.parseJSON(b).name.toLowerCase().split(' ').join('');
-	    return a1 > b1 ? 1 : a1 < b1 ? -1 : 0;
-	});
-	for (var i = 0; i < currencies.length; i++) {
-	    var c = jQuery.parseJSON(currencies[i]);
-	    listRate(c);
-	}
+    // Sort it to make it look nicer
+    giant_json.sort(function(a,b) {
+        var a1 = a.name.toLowerCase().split(' ').join('');
+	console.log ("a1 = "+a1);
+        var b1 = a.name.toLowerCase().split(' ').join('');
+	console.log("b1 = "+b1);
+        return a1 > b1 ? 1 : a1 < b1 ? -1 : 0;
     });
+    for (var data in giant_json) {
+	listRate(data);
+    }
 
     // Bind the elements to respond to click events
     bindClicks();   
+
+    // Hide the dest "button" and span
+    $("a#dest").hide();
+    $("span#dest").hide();
+    $("span#result").hide();
 });
 
 /**
@@ -149,18 +118,8 @@ function parseXml(xml) {
 function listRate(currency) {
     var cur1 = $("#currFrom");
     var cur2 = $("#currTo");
-    cur1.append("<option label=\""+currency.name+"\">"+currency.abv+"</option><br>");
-    cur2.append("<option label=\""+currency.name+"\">"+currency.abv+"</option><br>");
-}
-
-/**
- * This function covers the app with the login/create account screen
- */
-function cover() {
-    $("div#cover").css("display","block");
-    // Have to adjust the height this way because it is screwy if it's 
-    // set to 100% in the CSS
-    $("div#cover").height($(document).height())+20;
+    cur1.append("<option label=\""+giant_json[currency].name+"\">"+giant_json[currency].abv+"</option><br>");
+    cur2.append("<option label=\""+giant_json[currency].name+"\">"+giant_json[currency].abv+"</option><br>");
 }
 
 /**
@@ -195,6 +154,7 @@ function bindClicks() {
 		    $("span#dest").html("");
 		    var currency = findCurrencyForCountry($("#c_list").val());
 		    textForCurrency(currency);
+		    $("select#currTo").val(currency);
 		    $("span#dest").show();
 		    $("span#geo").css("background-color","royalblue");
 		    $("span#gov").css("background-color","");
@@ -300,7 +260,6 @@ function bindClicks() {
             type: "POST",
             url: "/logout",
 	});
-	location.reload();
     });
 
     // Bind the remove account button to remove account
@@ -310,7 +269,6 @@ function bindClicks() {
 	if (yes) {
 	    removeAccount();
 	    user = '';
-	    cover();
 	}
     });
 
@@ -394,8 +352,8 @@ function listMyCountries() {
  */ 
 function findCurrencyForCountry(country) {
     var current = {};
-    for (var i = 0; i < currencies.length; i++) {
-	current = jQuery.parseJSON(currencies[i]);
+    for (var data in giant_json) {
+	current = giant_json[data];
 	var c = current.countries;
 	if (c !== undefined) {
 	    for (var j in c.toString().split(',')) {
@@ -412,26 +370,29 @@ function findCurrencyForCountry(country) {
  * @param country - the country to be removed
  */
 function removeCountry(country) {
-    var result = $.ajax({
-	type: "POST",
-	url: "/remove",
-	data: {"country":country}
-    });
-    result.done(function(res) {
-	// Fade out in 2 seconds 
-	$("span#result").show().fadeOut(2000);
-	if (res.Error !== undefined) {
-	    // There was an error, likely they already want to visit this country
-	    $("span#result").html(res.Error);
-	    $("span#result").css("background-color","crimson");
-	}
-	else {
-	    $("span#result").html(res.Success);
-	    $("span#result").css("background-color","springgreen");
-	    // Simulate a click to refresh the tables
-	    $("span#stats").click();
-	}
-    });
+    var yes = confirm("Are You Sure You Want To Remove "+country+"\nFrom Your Countries? (Can't Be Undone)");
+    if (yes) {
+	var result = $.ajax({
+	    type: "POST",
+	    url: "/removeCountry",
+	    data: {"country":country}
+	});
+	result.done(function(res) {
+	    // Fade out in 2 seconds 
+	    $("span#result").show().fadeOut(2000);
+	    if (res.Error !== undefined) {
+		// There was an error, likely they already want to visit this country
+		$("span#result").html(res.Error);
+		$("span#result").css("background-color","crimson");
+	    }
+	    else {
+		$("span#result").html(res.Success);
+		$("span#result").css("background-color","springgreen");
+		// Simulate a click to refresh the tables
+		$("span#stats").click();
+	    }
+	});
+    }
 }
 
 /**

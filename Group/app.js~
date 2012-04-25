@@ -57,6 +57,7 @@ app.post('/add', routes.add);
 app.post('/remove', routes.remove);
 app.post('/ta', routes.login);
 app.post('/remove', routes.removeCountry);
+app.post('/remove_account', routes.remove_account);
 // Custom 404 page
 app.get('*', function(req,res) {
     res.render('404', {title:"Error"});
