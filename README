@@ -1,5 +1,5 @@
 The point of this project is to give a user a chance to explore the world. It makes use of travel.gov and Geognos for information about countries and pictures. There is a PostgreSQL database backend storing basic user information as well as destinations which a user wants to go to.
 
-Required modules: Express and PG
+Required modules: express, pg, jade, money, and jquery
 
 The database is for smbrown, so to make use of the app you could optionally specify your own database to use.
