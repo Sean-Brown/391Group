@@ -42,11 +42,7 @@ $(document).ready(function() {
     
     // Sort it to make it look nicer
     giant_json.sort(function(a,b) {
-        var a1 = a.name.toLowerCase().split(' ').join('');
-	console.log ("a1 = "+a1);
-        var b1 = a.name.toLowerCase().split(' ').join('');
-	console.log("b1 = "+b1);
-        return a1 > b1 ? 1 : a1 < b1 ? -1 : 0;
+        return compareC(e1,e2, "name");
     });
     for (var data in giant_json) {
 	listRate(data);
@@ -54,6 +50,11 @@ $(document).ready(function() {
 
     // Bind the elements to respond to click events
     bindClicks();   
+
+    // Hide the dest "button" and span
+    $("a#dest").hide();
+    $("span#dest").hide();
+    $("span#result").hide();
 });
 
 /**
@@ -348,7 +349,7 @@ function listMyCountries() {
 function findCurrencyForCountry(country) {
     var current = {};
     for (var data in giant_json) {
-	current = jQuery.parseJSON(giant_json[data]);
+	current = giant_json[data];
 	var c = current.countries;
 	if (c !== undefined) {
 	    for (var j in c.toString().split(',')) {
@@ -430,4 +431,11 @@ function removeAccount() {
  */
 jQuery.fn.exists = function() {
     return this.length>0;
+}
+
+/** 
+ * This is a helper function to sort currencies
+ */
+function compareC(el1, el2, index) {
+    return el1[index] == el2[index] ? 0 : (el1[index] < el2[index] ? -1 : 1);
 }

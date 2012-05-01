@@ -42,11 +42,7 @@ $(document).ready(function() {
     
     // Sort it to make it look nicer
     giant_json.sort(function(a,b) {
-        var a1 = a.name.toLowerCase().split(' ').join('');
-	console.log ("a1 = "+a1);
-        var b1 = a.name.toLowerCase().split(' ').join('');
-	console.log("b1 = "+b1);
-        return a1 > b1 ? 1 : a1 < b1 ? -1 : 0;
+        return compareC(a,b, "name");
     });
     for (var data in giant_json) {
 	listRate(data);
@@ -435,4 +431,11 @@ function removeAccount() {
  */
 jQuery.fn.exists = function() {
     return this.length>0;
+}
+
+/** 
+ * This is a helper function to sort currencies
+ */
+function compareC(el1, el2, index) {
+    return el1[index] == el2[index] ? 0 : (el1[index] < el2[index] ? -1 : 1);
 }
